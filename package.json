@@ -1,0 +1,53 @@
+{
+  "name": "@kninnug/trivis",
+  "version": "1.0.0",
+  "description": "Compute visibility polygons by Triangular Expansion",
+  "main": "TriVis",
+  "exports": {
+    "import": "./TriVis.mjs",
+    "require": "./TriVis.js"
+  },
+  "files": [
+    "TriVis.mjs",
+    "TriVis.js",
+    "TriVis.min.js"
+  ],
+  "scripts": {
+    "test": "node test.mjs",
+    "build": "rollup -c",
+    "prepare": "npm run test && npm run build",
+    "clean": "rm -r ./coverage ./TriVis.js ./TriVis.min.js || true"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kninnug/TriVis.git"
+  },
+  "keywords": [
+    "visibility",
+    "polygon",
+    "triangular",
+    "expansion",
+    "Delaunator"
+  ],
+  "author": "Marco Gunnink",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kninnug/TriVis/issues"
+  },
+  "homepage": "https://github.com/kninnug/TriVis#readme",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "@kninnug/containing-triangle": "^1.0.0",
+    "robust-predicates": "^3.0.1"
+  },
+  "devDependencies": {
+    "@kninnug/constrainautor": "^2.1.0",
+    "@rollup/plugin-node-resolve": "^11.2.1",
+    "delaunator": "^5.0.0",
+    "rollup": "^2.46.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "tape": "^5.2.2"
+  }
+}
