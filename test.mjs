@@ -4,10 +4,12 @@ import {orient2d} from 'robust-predicates';
 import Delaunator from 'delaunator';
 import Constrainautor from '@kninnug/constrainautor';
 import triangularExpansion from './TriVis.mjs';
+import {loadTests, findTest} from './delaunaytests/loader.mjs';
 
-const EPSILON = 2**-50;
+const EPSILON = 2**-50,
+	testFiles = loadTests(false);
 const references = [{
-	file: './tests/amitexp.json',
+	file: 'amitexp.json',
 	query: [563, 241],
 	output: [
 		[770, 270, 590, 270],
@@ -43,7 +45,7 @@ const references = [{
 		[590, 270, 590, 290]
 	]
 }, {
-	file: './tests/amitexp.json',
+	file: 'amitexp.json',
 	query: [530, 234],
 	output: [
 		[770, 270, 590, 270],
@@ -79,7 +81,7 @@ const references = [{
 		[590, 270, 590, 290]
 	]
 }, {
-	file: './tests/amitexp.json',
+	file: 'amitexp.json',
 	query: [387, 479],
 	output: [
 		[430, 510, 290, 510],
@@ -102,7 +104,7 @@ const references = [{
 		[290, 510, 290, 430]
 	]
 }, {
-	file: './tests/amitexp.json',
+	file: 'amitexp.json',
 	query: [530, 233, 740.0107140124046, 496.75082938258225, 266.2491706174178, 443.0107140124046],
 	output: [
 		[370, 450, 370, 360.3994638069705],
@@ -122,7 +124,7 @@ const references = [{
 		[780, 546.9730639730642, 780, 614.2956036457548]
 	]
 }, {
-	file: './tests/amitp.json',
+	file: 'amitp.json',
 	query: [550, 536],
 	output: [
 		[620, 520, 610, 550],
@@ -161,7 +163,7 @@ const references = [{
 		[610, 550, 600, 600]
 	]
 }, {
-	file: './tests/amitp.json',
+	file: 'amitp.json',
 	query: [550, 536, 479.28932188134524, 536, 550, 465.28932188134524],
 	output: [
 		[520, 440, 550, 440],
@@ -174,18 +176,18 @@ const references = [{
 		[440, 536, 440, 520]
 	]
 }, {
-	file: './tests/amitp.json',
+	file: 'amitp.json',
 	query: [332, 386, 380.7903679018718, 290.5405845398161, 427.4594154601839, 434.7903679018718],
 	output: [[360, 331.2173913043478, 360, 400.31111111111113]]
 }, {
-	file: './tests/amitp.json',
+	file: 'amitp.json',
 	query: [332, 386, 345.6256212499073, 264.21600086401304, 423.0689887208956, 304.0034190142456],
 	output: [
 		[360, 280, 360, 360.7893953820272],
 		[343.8596520293065, 280.0000000000001, 360, 280]
 	]
 }, {
-	file: './tests/ipa/mei-2.json',
+	file: 'ipa/mei-2.json',
 	query: [459, 440],
 	output: [
 		[332, 462, 450, 388],
@@ -199,7 +201,7 @@ const references = [{
 		[416.73751474636254, 195.81675186787243, 532, 134]
 	]
 }, {
-	file: './tests/strain.json',
+	file: 'strain.json',
 	query: [97, 156],
 	output: [
 		[5, 201, 53, 98],
@@ -211,7 +213,7 @@ const references = [{
 		[53, 98, 196.30195510499638, 38.76852522326817]
 	]
 }, {
-	file: './tests/strain.json',
+	file: 'strain.json',
 	query: [330, 109],
 	output: [
 		[392, 148, 248.2189868368568, 249.66334264060632],
@@ -221,7 +223,7 @@ const references = [{
 		[248.2189868368568, 249.66334264060632, 194, 288]
 	]
 }, {
-	file: './tests/strain.json',
+	file: 'strain.json',
 	query: [102, 192],
 	output: [
 		[194, 288, 5, 201],
@@ -235,15 +237,15 @@ const references = [{
 		[5, 201, 53, 98]
 	]
 }, {
-	file: './tests/strain.json',
+	file: 'strain.json',
 	query: [146, 171],
 	output: []
 }, {
-	file: './tests/tri.json',
+	file: 'tri.json',
 	query: [125, 118],
 	output: []
 }, {
-	file: './tests/ipa/matisse-nuit.json',
+	file: 'ipa/matisse-nuit.json',
 	query: [457, 249],
 	output: [
 		[453, 234, 460, 250],
@@ -269,7 +271,7 @@ const references = [{
 		[460, 250, 455, 281]
 	]
 }, {
-	file: './tests/ipa/matisse-nuit.json',
+	file: 'ipa/matisse-nuit.json',
 	query: [352, 602],
 	output: [
 		[318, 610, 323, 595],
@@ -312,7 +314,7 @@ const references = [{
 		[323, 595, 319, 571]
 	]
 }, {
-	file: './tests/ipa/seidel-3.json',
+	file: 'ipa/seidel-3.json',
 	query: [256, 352],
 	output: [
 		[175, 282, 247, 315],
@@ -333,7 +335,7 @@ const references = [{
 		[247, 315, 318, 263]
 	]
 }, {
-	file: './tests/ipa/seidel-3.json',
+	file: 'ipa/seidel-3.json',
 	query: [256, 352, 413.2187408195795, 485.0122833993383, 234.99260397048673, 556.8626108201768],
 	output: [
 		[285, 780, 221.34034829332205, 689.9984234491795],
@@ -343,7 +345,7 @@ const references = [{
 		[499.44587113039216, 557.9633033211669, 430, 650]
 	]
 }, {
-	file: './tests/ipa/seidel-3.json',
+	file: 'ipa/seidel-3.json',
 	query: [256, 352, 355.5263016439092, 94.86284733417926, 524.4212271396464, 288.9520434839767],
 	output: [
 		[579, 216, 655.1581590242263, 258.2439788337506],
@@ -354,7 +356,7 @@ const references = [{
 		[279.5475259828696, 291.16237533648984, 318, 263]
 	]
 }, {
-	file: './tests/ipa/seidel-3.json',
+	file: 'ipa/seidel-3.json',
 	query: [256, 352, 182.2758425261011, 355.8403912253514, 211.2025977215036, 293.3212751578686],
 	output: [
 		[175, 282, 217.393275160481, 301.43025111522047],
@@ -375,79 +377,131 @@ function validatePoly(t, qx, qy, poly){
 		return;
 	}
 	
-	let [plx, ply, prx, pry] = poly[0];
+	let [plx, ply, prx, pry] = poly[0],
+		failed = false;
 	for(let i = 1; i < len; i++){
 		const [lx, ly, rx, ry] = poly[i],
 			oSeg = orient2d(qx, qy, rx, ry, lx, ly),
 			oPrev = orient2d(qx, qy, prx, pry, rx, ry);
 		if(oSeg < 0){
 			t.fail(`segment ${i} [${lx}, ${ly}, ${rx}, ${ry}] not oriented left-right (${oSeg})`);
+			failed = true;
 		}
 		if(oPrev < 0){
 			t.fail(`segment ${i}: [${lx}, ${ly}, ${rx}, ${ry}] not left of previous: [${plx}, ${ply}, ${prx}, ${pry}] (${oPrev})`);
+			failed = true;
 		}
 		([plx, ply, prx, pry] = [lx, ly, rx, ry]);
 	}
-	t.pass(`segments oriented counter-clockwise`);
+	
+	t.assert(!failed, `segments oriented counter-clockwise`);
+	return failed;
+}
+
+function compareSegs(p, r){
+	const dl = sqdist(p[0], p[1], r[0], r[1]),
+		dr = sqdist(p[2], p[3], r[2], r[3]);
+	return Math.max(dl, dr);
 }
 
 function comparePolys(t, poly, ref){
 	if(poly.length !== ref.length){
 		t.fail(`wrong number of segments: ${poly.length} !== ${ref.length}`);
-		console.log('poly', poly);
-		return;
+		return true;
 	}
 	
 	const len = poly.length;
-	let maxErr = 0;
-	for(let i = 0; i < len; i++){
-		const p = poly[i],
-			r = ref[i],
-			dl = sqdist(p[0], p[1], r[0], r[1]),
-			dr = sqdist(p[2], p[3], r[2], r[3]);
-		if(dl > EPSILON || dr > EPSILON){
-			t.fail(`segment ${i} not equal to reference`);
-		}
-		maxErr = Math.max(maxErr, dl, dr);
+	if(!len){
+		t.pass(`empty polygon as expected`);
+		return false;
 	}
-	t.pass(`visiblity polygon equal to reference, maximum error: ${maxErr}`);
+	
+	// Find the first segment, as it may be shifted from the reference. As long
+	// as all the segments are present, we're fine.
+	let start = 0;
+	for(; start < len; start++){
+		const p = poly[start],
+			r = ref[0],
+			err = compareSegs(p, r);
+		if(err <= EPSILON){
+			break;
+		}
+	}
+	
+	if(start === len){
+		t.fail(`starting segment not found`);
+		return true;
+	}
+	
+	let maxErr = 0,
+		failed = false;
+	for(let i = 0, j = start; i < len; i++, j++){
+		const p = poly[j % len],
+			r = ref[i],
+			err = compareSegs(p, r);
+		if(err > EPSILON){
+			t.fail(`segment ${i} not equal to reference`);
+			failed = true;
+		}
+		maxErr = Math.max(maxErr, err);
+	}
+	
+	t.assert(!failed, `visiblity polygon equal to reference, maximum error: ${maxErr}`);
+	return failed;
 }
 
-function testFile(t, json, name){
-	const {points, edges} = json,
+function testExample(t){
+	// Points to be triangulated
+	const points = [[53,98],[5,201],[194,288],[280,195],[392,148],[413,43],[278,5],[169,71],[146,171]],
+		// Edges to be constrained
+		edges = [[5, 8]],
+		// Triangulate
+		del = Delaunator.from(points),
+		// Constrain the triangulation
+		con = new Constrainautor(del);
+	con.constrainAll(edges);
+	
+	// Query point
+	const qx = 162, qy = 262,
+		// Obstruction callback: use constrained edges as obstructions
+		obstructs = (edg) => con.isConstrained(edg),
+		// Left & right end-points of the initial viewing cone (optional)
+		ilx = 45, ily = 144, irx = 280, iry = 145,
+		// Compute visibility polygon
+		poly = triangularExpansion(del, qx, qy, obstructs, ilx, ily, irx, iry);
+	
+	validatePoly(t, qx, qy, poly);
+	comparePolys(t, poly, [
+		[146, 171, 354.6687325689495, 70.96405330027889],
+		[53, 98, 127.73364294495288, 67.11009424941949],
+		[35.85927180355631, 134.78114592153543, 53, 98]
+	]);
+	t.end();
+}
+
+function testFile(t, ref, test){
+	const {points, edges, name} = test,
+		{file, query: [qx, qy, ilx = NaN, ily = NaN, irx = NaN, iry = NaN], output} = ref,
 		del = Delaunator.from(points),
 		con = new Constrainautor(del);
 	con.constrainAll(edges);
 	
-	for(const {file, query: [qx, qy, ilx = NaN, ily = NaN, irx = NaN, iry = NaN], output} of references){
-		if(file !== name){
-			continue;
-		}
-		
-		const vis = triangularExpansion(del, qx, qy, 
-				edg => con.isConstrained(edg), ilx, ily, irx, iry);
-		
-		validatePoly(t, qx, qy, vis);
-		comparePolys(t, vis, output);
-	}
+	const vis = triangularExpansion(del, qx, qy, 
+		edg => con.isConstrained(edg), ilx, ily, irx, iry);
+	
+	validatePoly(t, qx, qy, vis);
+	comparePolys(t, vis, output);
 	
 	t.end();
 }
 
-const files = fs.readdirSync('./tests/', 'utf8').map(f => './tests/' + f)
-		.concat(fs.readdirSync('./tests/ipa/', 'utf8').map(f => './tests/ipa/' + f))
-		.filter(f => f.endsWith('.json'));
-
 function main(args){
-	//if(!args.length){
-	//	tape.test("Example", testExample);
-	//}
+	if(!args.length){
+		tape.test("Example", testExample);
+	}
 	
-	args = args.length ? args : files;
-	
-	for(const file of args){
-		const json = JSON.parse(fs.readFileSync(file, 'utf8'));
-		tape.test(file, (t) => testFile(t, json, file));
+	for(const ref of references){
+		tape.test(ref.file, (t) => testFile(t, ref, findTest(testFiles, ref.file)));
 	}
 }
 

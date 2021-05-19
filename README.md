@@ -15,18 +15,17 @@ Example
 		// Triangulate
 		del = Delaunator.from(points),
 		// Constrain the triangulation
-		con = new Constrainautor(del),
-		// Query point
-		qx = 162, qy = 262,
+		con = new Constrainautor(del);
+	con.constrainAll(edges);
+	
+	// Query point
+	const qx = 162, qy = 262,
 		// Obstruction callback: use constrained edges as obstructions
 		obstructs = (edg) => con.isConstrained(edg),
 		// Left & right end-points of the initial viewing cone (optional)
 		ilx = 45, ily = 144, irx = 280, iry = 145,
 		// Compute visibility polygon
 		poly = triangularExpansion(del, qx, qy, obstructs, ilx, ily, irx, iry);
-	
-	// Constrain the triangulation
-	con.constrainAll(edges);
 	
 	for(const [lx, ly, rx, ry] of poly){
 		drawTriangle(lx, ly, qx, qy, rx, ry);

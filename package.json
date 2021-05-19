@@ -2,7 +2,8 @@
   "name": "@kninnug/trivis",
   "version": "1.0.0",
   "description": "Compute visibility polygons by Triangular Expansion",
-  "main": "TriVis",
+  "main": "TriVis.min.js",
+  "module": "TriVis.mjs",
   "exports": {
     "import": "./TriVis.mjs",
     "require": "./TriVis.js"
@@ -39,14 +40,14 @@
     "test": "tests"
   },
   "dependencies": {
-    "@kninnug/containing-triangle": "^1.0.0",
+    "@kninnug/containing-triangle": "^1.1.1",
     "robust-predicates": "^3.0.1"
   },
   "devDependencies": {
-    "@kninnug/constrainautor": "^2.1.0",
+    "@kninnug/constrainautor": "^2.1.2",
     "@rollup/plugin-node-resolve": "^11.2.1",
     "delaunator": "^5.0.0",
-    "rollup": "^2.46.0",
+    "rollup": "^2.48.0",
     "rollup-plugin-terser": "^7.0.2",
     "tape": "^5.2.2"
   }
