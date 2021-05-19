@@ -1,6 +1,6 @@
 {
   "name": "@kninnug/trivis",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Compute visibility polygons by Triangular Expansion",
   "main": "TriVis.min.js",
   "module": "TriVis.mjs",
