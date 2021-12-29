@@ -1,14 +1,22 @@
-import fs from 'fs';
 import tape from 'tape';
 import {orient2d} from 'robust-predicates';
 import Delaunator from 'delaunator';
 import Constrainautor from '@kninnug/constrainautor';
-import triangularExpansion from './TriVis.mjs';
-import {loadTests, findTest} from './delaunaytests/loader.mjs';
+import triangularExpansion from './TriVis';
+import {loadTests, findTest, TestFile} from './delaunaytests/loader';
+
+import type {Segment} from './TriVis';
+import type {Test} from 'tape';
+type P2 = [number, number];
+type TestCase = {
+    file: string,
+    query: P2 | [...P2, ...Segment],
+    output: Segment[]
+}
 
 const EPSILON = 2**-50,
 	testFiles = loadTests(false);
-const references = [{
+const references: TestCase[] = [{
 	file: 'amitexp.json',
 	query: [563, 241],
 	output: [
@@ -364,14 +372,14 @@ const references = [{
 	]
 }];
 
-function sqdist(x1, y1, x2, y2){
+function sqdist(x1: number, y1: number, x2: number, y2: number){
 	const dx = x2 - x1,
 		dy = y2 - y1;
 	
 	return dx * dx + dy * dy;
 }
 
-function validatePoly(t, qx, qy, poly){
+function validatePoly(t: Test, qx: number, qy: number, poly: Segment[]){
 	const len = poly.length;
 	if(!len){
 		return;
@@ -398,13 +406,13 @@ function validatePoly(t, qx, qy, poly){
 	return failed;
 }
 
-function compareSegs(p, r){
+function compareSegs(p: Segment, r: Segment){
 	const dl = sqdist(p[0], p[1], r[0], r[1]),
 		dr = sqdist(p[2], p[3], r[2], r[3]);
 	return Math.max(dl, dr);
 }
 
-function comparePolys(t, poly, ref){
+function comparePolys(t: Test, poly: Segment[], ref: Segment[]){
 	if(poly.length !== ref.length){
 		t.fail(`wrong number of segments: ${poly.length} !== ${ref.length}`);
 		return true;
@@ -450,11 +458,11 @@ function comparePolys(t, poly, ref){
 	return failed;
 }
 
-function testExample(t){
+function testExample(t: Test){
 	// Points to be triangulated
 	const points = [[53,98],[5,201],[194,288],[280,195],[392,148],[413,43],[278,5],[169,71],[146,171]],
 		// Edges to be constrained
-		edges = [[5, 8]],
+		edges: P2[] = [[5, 8]],
 		// Triangulate
 		del = Delaunator.from(points),
 		// Constrain the triangulation
@@ -464,7 +472,7 @@ function testExample(t){
 	// Query point
 	const qx = 162, qy = 262,
 		// Obstruction callback: use constrained edges as obstructions
-		obstructs = (edg) => con.isConstrained(edg),
+		obstructs = (edg: number) => con.isConstrained(edg),
 		// Left & right end-points of the initial viewing cone (optional)
 		ilx = 45, ily = 144, irx = 280, iry = 145,
 		// Compute visibility polygon
@@ -479,7 +487,7 @@ function testExample(t){
 	t.end();
 }
 
-function testFile(t, ref, test){
+function testFile(t: Test, ref: TestCase, test: TestFile){
 	const {points, edges, name} = test,
 		{file, query: [qx, qy, ilx = NaN, ily = NaN, irx = NaN, iry = NaN], output} = ref,
 		del = Delaunator.from(points),
@@ -495,13 +503,13 @@ function testFile(t, ref, test){
 	t.end();
 }
 
-function main(args){
+function main(args: string[]){
 	if(!args.length){
-		tape.test("Example", testExample);
+		tape("Example", testExample);
 	}
 	
 	for(const ref of references){
-		tape.test(ref.file, (t) => testFile(t, ref, findTest(testFiles, ref.file)));
+		tape(ref.file, (t) => testFile(t, ref, findTest(testFiles, ref.file)!));
 	}
 }
 

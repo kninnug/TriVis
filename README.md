@@ -50,18 +50,19 @@ or as an ECMAScript/ES6 module:
 
 or in the browser:
 
-	<script src="node_modules/@kninnug/trivis/TriVis.js"></script>
+	<script src="node_modules/@kninnug/trivis/lib/TriVis.js"></script>
 
 or minified:
 
-	<script src="node_modules/@kninnug/trivis/TriVis.min.js"></script>
+	<script src="node_modules/@kninnug/trivis/lib/TriVis.min.js"></script>
 
 The TriVis library does not depend on Delaunator itself, but the input is
 expected to be in the format that Delaunator outputs. The ES module variant
 (`TriVis.mjs`) depends on [robust-predicates](https://www.npmjs.com/package/robust-predicates)
 and [containing-triangle](https://www.npmjs.com/package/@kninnug/containing-triangle),
-but the browser and minified versions (`TriVis.js` and `TriVis.min.js`) come
-with these dependencies compiled in, and can be used standalone.
+but the CommonJS, browser, and minified versions (`lib/TriVis.cjs`,
+`lib/TriVis.js`, and `TriVis.min.js`) come with these dependencies compiled in, 
+and can be used standalone. The (source) TypeScript version is in `TriVis.ts`.
 
 Usage
 -----
@@ -87,6 +88,20 @@ left- and right-hand side end-points of the segments that make up the visibility
 polygon. Each triplet `(lx, ly) (qx, qy) (rx, ry)` forms a counter-clockwise
 triangle that is entirely visible from the query point. The segments are also
 ordered counter-clockwise around `(qx, qy)`.
+
+Changes
+-------
+
+### 2.0.0
+- Convert to TypeScript.
+- Move built files to `lib/`.
+
+### 1.0.1
+- Update dependencies.
+- Move test files to separate repository.
+
+### 1.0.0
+- Initial version.
 
 Attributions
 ------------

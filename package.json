@@ -2,22 +2,25 @@
   "name": "@kninnug/trivis",
   "version": "1.0.1",
   "description": "Compute visibility polygons by Triangular Expansion",
-  "main": "TriVis.min.js",
-  "module": "TriVis.mjs",
+  "main": "./lib/TriVis.min.js",
+  "module": "./lib/TriVis.mjs",
   "exports": {
-    "import": "./TriVis.mjs",
-    "require": "./TriVis.js"
+    "import": "./lib/TriVis.mjs",
+    "require": "./lib/TriVis.cjs"
   },
+  "types": "TriVis.ts",
   "files": [
-    "TriVis.mjs",
-    "TriVis.js",
-    "TriVis.min.js"
+    "TriVis.ts",
+    "lib/TriVis.cjs",
+    "lib/TriVis.mjs",
+    "lib/TriVis.js",
+    "lib/TriVis.min.js"
   ],
   "scripts": {
-    "test": "node test.mjs",
+    "test": "npm run build && node test/test.mjs",
     "build": "rollup -c",
-    "prepare": "npm run test && npm run build",
-    "clean": "rm -r ./coverage ./TriVis.js ./TriVis.min.js || true"
+    "prepare": "npm run build",
+    "clean": "rm -r ./coverage ./lib/ ./test/ || true"
   },
   "repository": {
     "type": "git",
@@ -36,19 +39,23 @@
     "url": "https://github.com/kninnug/TriVis/issues"
   },
   "homepage": "https://github.com/kninnug/TriVis#readme",
-  "directories": {
-    "test": "tests"
-  },
   "dependencies": {
-    "@kninnug/containing-triangle": "^1.1.1",
+    "@kninnug/containing-triangle": "^2.0.0",
     "robust-predicates": "^3.0.1"
   },
   "devDependencies": {
-    "@kninnug/constrainautor": "^2.1.2",
+    "@kninnug/constrainautor": "^3.0.0",
+    "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^11.2.1",
+    "@rollup/plugin-replace": "^3.0.1",
+    "@rollup/plugin-typescript": "^8.3.0",
+    "@types/delaunator": "^5.0.0",
+    "@types/tape": "^4.13.2",
     "delaunator": "^5.0.0",
     "rollup": "^2.48.0",
     "rollup-plugin-terser": "^7.0.2",
-    "tape": "^5.2.2"
+    "tape": "^5.2.2",
+    "tslib": "^2.3.1",
+    "typescript": "^4.5.4"
   }
 }
